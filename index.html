@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Perseus & Medusa | A 10-Second Cinematic Journey</title>
+  <meta name="description" content="A 10-second cinematic scroll-scrubbed journey of Perseus entering Medusa's lair, guiding his strike through the reflection of his mirrored shield.">
+  
+  <!-- Google Fonts: Cinzel & Cormorant Garamond -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Cinzel+Decorative:wght@700&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400;1,600&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Preloader Screen -->
+  <div id="preloader" class="preloader-overlay">
+    <div class="preloader-content">
+      <div class="loader-crest">❖</div>
+      <h2 class="loader-title">AWAKENING THE MYTH</h2>
+      <div class="loader-bar-track">
+        <div id="loaderBar" class="loader-bar-fill"></div>
+      </div>
+      <p id="loaderStatus" class="loader-status">Preloading sequence frames... 0%</p>
+    </div>
+  </div>
+
+  <!-- Ambient Golden Dust / Sparkles Canvas -->
+  <canvas id="ambient-canvas" class="ambient-canvas" aria-hidden="true"></canvas>
+
+  <!-- Audio Element: Gods of Greece - Hades -->
+  <audio id="bgMusic" src="gods-of-greece-hades-by-ende-dot-app.mp3" preload="auto" loop></audio>
+
+  <!-- Top Controls: Sound Toggle & Fullscreen Recommendation / Toggle -->
+  <div class="top-nav-controls">
+    <div class="fullscreen-recommendation-pill" id="fsRecommendPill">
+      <span class="fs-icon">⛶</span>
+      <span class="fs-text">Suggested in Full Screen Mode</span>
+      <button id="toggleFullscreenBtn" class="fs-action-btn" aria-label="Toggle Fullscreen">
+        <span>GO FULLSCREEN</span>
+      </button>
+    </div>
+
+    <button id="soundToggleBtn" class="sound-toggle-btn" aria-label="Toggle Myth Soundtrack">
+      <span class="sound-icon">🔊</span>
+      <span class="sound-label">MYTH AUDIO: ON</span>
+    </button>
+  </div>
+
+  <!-- Progress Bar -->
+  <div class="scroll-progress-bar" id="progressBar"></div>
+
+  <!-- SECTION 1: HOMESCREEN HERO (Title Graphic as the First Screen) -->
+  <section class="prologue-section" id="hero-screen">
+    <div class="prologue-bg-layer"></div>
+    <div class="prologue-spatter-layer"></div>
+    
+    <div class="hero-poster-container">
+      <!-- Top Crest -->
+      <div class="poster-crest">❖ &nbsp; ANCIENT GREEK LEGEND &nbsp; ❖</div>
+
+      <!-- Main Bold Graphic Title -->
+      <div class="poster-title-wrap">
+        <h1 class="poster-title-main">PERSEUS</h1>
+        <div class="poster-title-sub-row">
+          <span class="poster-ampersand">&amp;</span>
+          <h2 class="poster-title-secondary">MEDUSA</h2>
+        </div>
+      </div>
+
+      <!-- Subtitle Location -->
+      <p class="poster-location">SERIPHOS &bull; THE UNDERWORLD ABYSS</p>
+
+      <div class="scroll-hint">
+        <span class="scroll-prompt-text">THE MYTH AWAITS</span>
+        <div class="pulse-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROLOGUE CHALLENGE POPUP OVERLAY (Opens over the Hero Screen: "You are Perseus..." with Accept / Refuse) -->
+  <div id="challengePopupModal" class="challenge-modal-overlay active">
+    <div class="choice-tablet-wrapper">
+      <div class="choice-stone-tablet">
+        <div class="tablet-corner top-left"></div>
+        <div class="tablet-corner top-right"></div>
+        <div class="tablet-corner bottom-left"></div>
+        <div class="tablet-corner bottom-right"></div>
+
+        <div class="choice-header">
+          <div class="poster-crest">❖ &nbsp; THE KING'S COMMAND &nbsp; ❖</div>
+          <h2 class="choice-title">THE SUMMONS OF POLYDECTES</h2>
+          <div class="choice-subtitle">Seriphos &bull; The Royal Court</div>
+          <div class="choice-divider"></div>
+        </div>
+
+        <div class="choice-body">
+          <p class="choice-text">
+            You are Perseus, son of Zeus. A king who wishes you gone has given you a task he believes no one can survive: bring back the head of Medusa, a gorgon whose gaze turns living flesh to stone. Refuse, and you dishonor yourself. Attempt it, and you may never return. You have been given a mirrored shield, a curved blade, and one rule you must not break: never look at her directly. The lair lies ahead. There is no one left to send but you.
+          </p>
+        </div>
+
+        <div class="choice-buttons-row">
+          <button id="acceptChallengeBtn" class="choice-btn accept-btn" aria-label="Accept the Challenge">
+            <span class="btn-glow-gold"></span>
+            <span>ACCEPT THE CHALLENGE</span>
+          </button>
+          <button id="refuseChallengeBtn" class="choice-btn refuse-btn" aria-label="Refuse the Challenge">
+            <span>REFUSE</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Refusal Grey-Stone Fade Overlay -->
+  <div id="refusalOverlay" class="refusal-overlay">
+    <div class="refusal-card">
+      <div class="refusal-icon">🪨</div>
+      <h2 class="refusal-title">DISHONOR &bull; THE UNMADE LEGEND</h2>
+      <div class="modal-divider red-divider"></div>
+      <p class="refusal-text">
+        “You turn your back on the king’s decree. The court falls silent, whispers of cowardice shadowing your name across the Aegean. The gorgon remains unvanquished in the dark, and your divine blood fades into forgotten dust. But fate has not yet sealed your choice.”
+      </p>
+      <button id="reconsiderBtn" class="choice-btn reconsider-btn" aria-label="Reconsider Challenge">
+        <span>RECONSIDER</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- SECTION 1.5: THE GIFTS OF THE GODS (Fades in after Accepting Challenge, before the Threshold) -->
+  <section class="gifts-section" id="gifts-section">
+    <div class="gifts-bg-layer"></div>
+    <div class="gifts-shimmer-layer"></div>
+    
+    <div class="choice-tablet-wrapper gifts-tablet-wrap">
+      <div class="choice-stone-tablet divine-stone-tablet">
+        <div class="tablet-corner top-left"></div>
+        <div class="tablet-corner top-right"></div>
+        <div class="tablet-corner bottom-left"></div>
+        <div class="tablet-corner bottom-right"></div>
+
+        <div class="choice-header">
+          <div class="poster-crest gold-shimmer-crest">❖ &nbsp; DIVINE FAVOR &nbsp; ❖</div>
+          <h2 class="choice-title divine-title">THE GIFTS OF THE GODS</h2>
+          <div class="choice-subtitle">Blessed by Athena &amp; Hermes</div>
+          <div class="choice-divider gold-shimmer-divider"></div>
+        </div>
+
+        <div class="choice-body">
+          <p class="choice-text">
+            The gods have seen your courage and will not send you unarmed into the abyss. Athena bestows upon you her mirrored bronze shield, polished to flawless brilliance so that you may gaze upon reflection without turning to stone. Hermes grants his curved adamantine harpe blade, sharp enough to sever the immortal neck. Armed with divine gifts and mortal resolve, the lair awaits.
+          </p>
+        </div>
+
+        <div class="choice-buttons-row">
+          <button id="enterLairBtn" class="choice-btn accept-btn enter-lair-action-btn" aria-label="Enter the Lair">
+            <span class="btn-glow-gold"></span>
+            <span>ENTER THE LAIR</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: THRESHOLD (Transition Beat Before the Fight) -->
+  <section class="editorial-intro-section" id="editorial-intro">
+    <div class="editorial-banner-container">
+      <div class="editorial-banner-img" style="background-image: url('article_hero_banner.jpg');"></div>
+      <div class="editorial-banner-overlay"></div>
+      <div class="editorial-headline-box">
+        <h2 class="editorial-heavy-title">
+          THE THRESHOLD OF THE GORGON
+        </h2>
+      </div>
+    </div>
+
+    <div class="editorial-body-container">
+      <p class="editorial-paragraph">
+        The air grows cold as you step past the threshold. Torches gutter along stone walls that have not felt daylight in an age. Somewhere ahead, coiled in darkness, she is waiting. You lift your shield. You do not look down at your own reflection. Not yet.
+      </p>
+      <div class="editorial-meta-line">
+        <span class="meta-label">Task:</span> Slay the Gorgon Medusa &nbsp;&bull;&nbsp;
+        <span class="meta-label">Armament:</span> Mirrored Bronze Shield, Curved Blade
+      </div>
+      <div class="editorial-scroll-prompt">
+        <span>SCROLL TO DESCEND INTO THE FIGHT</span>
+        <div class="pulse-line"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 3: 10-SECOND CINEMATIC JOURNEY (600vh scroll-scrubbing track) -->
+  <div class="story-scroll-wrapper" id="story-wrapper">
+    <!-- Pinned Sticky Canvas Stage -->
+    <div class="sticky-stage">
+      <div class="bg-vignette"></div>
+      <div class="bg-grain"></div>
+
+      <!-- Strike Flash FX element -->
+      <div id="strikeFlash" class="strike-flash" aria-hidden="true"></div>
+
+      <!-- HTML5 Canvas for 50-frame animation -->
+      <canvas id="sequence-canvas" class="sequence-canvas"></canvas>
+
+      <!-- Progressive Cinematic Story Overlays (Accurately synced to 50 Visual Frames) -->
+      <div class="overlay-container">
+
+        <!-- 1. THE AIR IS STILL (Frames 1-6 / Progress 0.00 - 0.14: Dark cave, Perseus stepping in) -->
+        <div class="cinematic-step" id="step-0" data-range="0.00,0.14" data-time="0:00" data-label="THE LAIR">
+          <div class="cinematic-card align-left">
+            <div class="step-timestamp">THE LAIR</div>
+            <h3 class="step-punchline">THE AIR IS STILL.</h3>
+            <div class="step-rule"></div>
+            <div class="step-narrative">
+              <p>You step into the darkness.</p>
+              <p>The entrance disappears behind you.</p>
+              <p class="emphasis-line">There is no turning back.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. LISTEN (Frames 7-11 / Progress 0.14 - 0.24: Torches flicker, Medusa slithers forward) -->
+        <div class="cinematic-step" id="step-1" data-range="0.14,0.24" data-time="0:01" data-label="SOMETHING MOVES">
+          <div class="cinematic-card align-right">
+            <div class="step-timestamp">SOMETHING MOVES</div>
+            <h3 class="step-punchline">LISTEN.</h3>
+            <div class="step-rule"></div>
+            <div class="step-narrative">
+              <p>A faint hiss echoes through the stone cavern.</p>
+              <p>Then another. And another.</p>
+              <p class="emphasis-line">You tighten your grip on your blade.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. DON'T LOOK AT HER (Frames 12-17 / Progress 0.24 - 0.35: Medusa appears in stone archway) -->
+        <div class="cinematic-step" id="step-2" data-range="0.24,0.35" data-time="0:02" data-label="SHE APPEARS">
+          <div class="cinematic-card align-left warning-card">
+            <div class="step-timestamp alert-time">SHE APPEARS</div>
+            <h3 class="step-punchline danger-text">DON'T LOOK AT HER.</h3>
+            <div class="step-rule red-rule"></div>
+            <div class="step-narrative">
+              <p>You see her serpentine crown. Snakes awakening.</p>
+              <p>Two deadly eyes waiting in the darkness.</p>
+              <p>Your instinct tells you to look.</p>
+              <p class="emphasis-line danger-text">You don't.</p>
+            </div>
+            <!-- In-Scene Choice / Fight Prompt -->
+            <div class="scene-game-prompt">
+              <div class="prompt-question">WHAT WOULD YOU DO?</div>
+              <p class="prompt-subtext">The gorgon strikes from the dark. Raise your mirror before her gaze turns you to stone.</p>
+              <button id="launchGameBtn" class="fight-scene-btn" aria-label="Engage in battle">
+                <span class="btn-flare"></span>
+                <span class="btn-text">⚔️ FIGHT &bull; RAISE SHIELD</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. LOOK DOWN / THE SHIELD (Frames 18-24 / Progress 0.35 - 0.50: Close up of polished bronze shield) -->
+        <div class="cinematic-step" id="step-3" data-range="0.35,0.50" data-time="0:03" data-label="THE SHIELD">
+          <div class="cinematic-card align-right gold-glow-card">
+            <div class="step-timestamp">THE SHIELD</div>
+            <h3 class="step-punchline gold-text">LOOK DOWN.</h3>
+            <div class="step-rule"></div>
+            <div class="step-narrative">
+              <p>You raise the polished bronze shield.</p>
+              <p>Not at her. At her reflection.</p>
+              <p>There she is.</p>
+              <p class="emphasis-line">Close enough to kill you.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. SHE KNOWS YOU'RE HERE (Frames 25-29 / Progress 0.50 - 0.60: Medusa reflection lunging) -->
+        <div class="cinematic-step" id="step-4" data-range="0.50,0.60" data-time="0:05" data-label="THE HUNT">
+          <div class="cinematic-card align-left danger-card">
+            <div class="step-timestamp">THE HUNT</div>
+            <h3 class="step-punchline">SHE KNOWS YOU'RE HERE.</h3>
+            <div class="step-rule red-rule"></div>
+            <div class="step-narrative">
+              <p>Medusa strikes forward.</p>
+              <p>The polished shield catches her reflection.</p>
+              <p class="emphasis-line danger-text">One mistake &mdash; and you become stone.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. NOW. (Frames 30-34 / Progress 0.60 - 0.70: Perseus raising sword guided by reflection) -->
+        <div class="cinematic-step" id="step-5" data-range="0.60,0.70" data-time="0:06" data-label="THE MOMENT">
+          <div class="cinematic-card align-center intense-card">
+            <div class="step-timestamp">THE MOMENT</div>
+            <h3 class="step-punchline massive-text">NOW.</h3>
+            <div class="step-rule gold-rule"></div>
+            <div class="step-narrative">
+              <p>Her reflection shifts across the shield.</p>
+              <p>You see the opening.</p>
+              <p>Your hand tightens around the hilt.</p>
+              <p class="emphasis-line italic-line">Everything becomes silent.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. DON'T LOOK UP / THE STRIKE (Frames 35-39 / Progress 0.70 - 0.80: Perseus swinging the blade) -->
+        <div class="cinematic-step" id="step-6" data-range="0.70,0.80" data-time="0:07" data-label="THE STRIKE">
+          <div class="cinematic-card align-right strike-card">
+            <div class="step-timestamp alert-time">THE STRIKE</div>
+            <h3 class="step-punchline strike-text">DON'T LOOK UP.</h3>
+            <div class="step-rule red-rule"></div>
+            <div class="step-narrative">
+              <p>You turn.</p>
+              <p>You swing.</p>
+              <p class="emphasis-line strike-glow">The blade cuts through the darkness.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. YOU SURVIVED (Frames 40-45 / Progress 0.80 - 0.90: Fallen gorgon body, Perseus lowering blade) -->
+        <div class="cinematic-step" id="step-7" data-range="0.80,0.90" data-time="0:09" data-label="SILENCE">
+          <div class="cinematic-card align-left">
+            <div class="step-timestamp">SILENCE</div>
+            <h3 class="step-punchline">YOU SURVIVED.</h3>
+            <div class="step-rule"></div>
+            <div class="step-narrative">
+              <p>The snakes fall still.</p>
+              <p>The cave is silent again.</p>
+              <p class="emphasis-line">The task is complete.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. THE LEGEND (Frames 46-50 / Progress 0.90 - 1.00: Shafts of heavenly light breaking through cavern) -->
+        <div class="cinematic-step" id="step-8" data-range="0.90,1.00" data-time="0:10" data-label="THE LEGEND">
+          <div class="cinematic-card align-center triumph-card">
+            <div class="step-timestamp">THE LEGEND</div>
+            <h3 class="step-punchline triumph-heading">PERSEUS</h3>
+            <div class="step-rule gold-rule"></div>
+            <div class="step-narrative">
+              <p>Light breaks through the cavern stone.</p>
+              <p>Behind you lies the fallen monster.</p>
+              <p class="triumph-quote">“The hero who defeated the gaze without ever meeting it.”</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 4: MINI-GAME: SHIELD OF PERSEUS (In-Scene Interactive Modal Popup Overlay) -->
+  <div class="game-modal-popup-layer" id="perseus-game">
+    <div class="game-wrapper" id="gameArea">
+      <!-- Close/Return Button to Return to Story Scroll -->
+      <button id="closeGameBtn" class="game-close-btn" aria-label="Return to story">
+        <span>✕ CLOSE BATTLE</span>
+      </button>
+
+      <!-- Game Ambient FX Layers -->
+      <div class="game-vignette"></div>
+      <div class="game-particles-canvas-wrap">
+        <canvas id="game-fx-canvas" class="game-fx-canvas"></canvas>
+      </div>
+
+      <!-- Top HUD: Danger Meter, Timer, Hits Indicator -->
+      <div class="game-hud">
+        <div class="hud-item danger-container">
+          <div class="hud-label">
+            <span class="warning-icon">⚠</span> GAZE DANGER
+          </div>
+          <div class="danger-track">
+            <div id="dangerBar" class="danger-bar"></div>
+          </div>
+        </div>
+
+        <div class="hud-center-title">
+          <h3 class="game-badge">SHIELD OF PERSEUS</h3>
+          <p class="game-sub-badge">BLOCK STRIKES &bull; DO NOT GAZE</p>
+        </div>
+
+        <div class="hud-item stats-container">
+          <div class="timer-box">
+            <span class="hud-label">SURVIVAL</span>
+            <span id="gameTimer" class="timer-val">10s</span>
+          </div>
+          <div class="hits-box">
+            <span class="hud-label">DEFENSE</span>
+            <div id="hitsIcons" class="hits-icons">
+              <span class="shield-hit active" title="Shield intact">🛡️</span>
+              <span class="shield-hit active" title="Shield intact">🛡️</span>
+              <span class="shield-hit active" title="Shield intact">🛡️</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Center Medusa Silhouette & Snake Hair Arena -->
+      <div class="medusa-arena" id="medusaArena">
+        <!-- Snake hair SVG tentacles container -->
+        <div class="snake-hair-wrap" id="snakeHairWrap">
+          <!-- Wiggling background snakes -->
+          <svg class="medusa-snakes-svg" viewBox="0 0 300 300" aria-hidden="true">
+            <g class="snakes-group">
+              <!-- Snake 1 Left -->
+              <path class="snake-path snake-1" d="M110,130 C70,110 50,70 80,40 C100,20 120,50 115,70" />
+              <!-- Snake 2 Top Left -->
+              <path class="snake-path snake-2" d="M130,110 C100,70 110,30 140,15 C160,5 165,35 150,55" />
+              <!-- Snake 3 Top Right -->
+              <path class="snake-path snake-3" d="M170,110 C200,70 190,30 160,15 C140,5 135,35 150,55" />
+              <!-- Snake 4 Right -->
+              <path class="snake-path snake-4" d="M190,130 C230,110 250,70 220,40 C200,20 180,50 185,70" />
+              <!-- Snake 5 Outer Left -->
+              <path class="snake-path snake-5" d="M95,150 C50,150 30,110 40,80 C50,50 80,80 75,100" />
+              <!-- Snake 6 Outer Right -->
+              <path class="snake-path snake-6" d="M205,150 C250,150 270,110 260,80 C250,50 220,80 225,100" />
+            </g>
+          </svg>
+        </div>
+
+        <!-- Medusa Central Head & Eye Target Area -->
+        <div class="medusa-silhouette" id="medusaFace">
+          <!-- Stylized Face SVG -->
+          <svg class="medusa-face-svg" viewBox="0 0 160 200" aria-hidden="true">
+            <defs>
+              <radialGradient id="faceGlow" cx="50%" cy="40%" r="60%">
+                <stop offset="0%" stop-color="#1b2838" />
+                <stop offset="70%" stop-color="#0a101d" />
+                <stop offset="100%" stop-color="#050811" />
+              </radialGradient>
+              <radialGradient id="eyeGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ff3b30" stop-opacity="1" />
+                <stop offset="60%" stop-color="#b31217" stop-opacity="0.8" />
+                <stop offset="100%" stop-color="#000000" stop-opacity="0" />
+              </radialGradient>
+            </defs>
+            <!-- Head silhouette -->
+            <path d="M80,20 C45,20 30,60 30,105 C30,150 55,185 80,185 C105,185 130,150 130,105 C130,60 115,20 80,20 Z" fill="url(#faceGlow)" stroke="#3a2e1d" stroke-width="2" />
+            <!-- Brow / Crown shadow -->
+            <path d="M48,82 Q80,72 112,82 Q80,90 48,82 Z" fill="#060913" opacity="0.9" />
+            <!-- Glowing Cursed Eyes -->
+            <ellipse class="medusa-eye left-eye" cx="60" cy="95" rx="9" ry="5" fill="url(#eyeGlow)" />
+            <circle class="medusa-pupil" cx="60" cy="95" r="2.5" fill="#ffffff" />
+            <ellipse class="medusa-eye right-eye" cx="100" cy="95" rx="9" ry="5" fill="url(#eyeGlow)" />
+            <circle class="medusa-pupil" cx="100" cy="95" r="2.5" fill="#ffffff" />
+            <!-- Serpentine cheek curves -->
+            <path d="M50,130 Q80,155 110,130" fill="none" stroke="#251a14" stroke-width="2" />
+          </svg>
+          <div class="gaze-aura" id="gazeAura"></div>
+        </div>
+
+        <!-- Floating striking snakes container -->
+        <div id="activeSnakesLayer" class="active-snakes-layer"></div>
+      </div>
+
+      <!-- Cursor-following Mirrored Shield -->
+      <div id="playerShield" class="player-shield" aria-hidden="true">
+        <svg class="shield-svg" viewBox="0 0 100 100">
+          <defs>
+            <radialGradient id="shieldMirror" cx="40%" cy="40%" r="60%">
+              <stop offset="0%" stop-color="#fae4a8" />
+              <stop offset="30%" stop-color="#dfb15b" />
+              <stop offset="70%" stop-color="#8a5a23" />
+              <stop offset="100%" stop-color="#2d1d0c" />
+            </radialGradient>
+            <linearGradient id="bronzeRim" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ffd875" />
+              <stop offset="50%" stop-color="#8a571c" />
+              <stop offset="100%" stop-color="#ffd875" />
+            </linearGradient>
+          </defs>
+          <!-- Outer Bronze Rim -->
+          <circle cx="50" cy="50" r="46" fill="url(#shieldMirror)" stroke="url(#bronzeRim)" stroke-width="5" />
+          <!-- Inner Aegis Pattern -->
+          <circle cx="50" cy="50" r="36" fill="none" stroke="rgba(255, 235, 170, 0.4)" stroke-dasharray="3 3" stroke-width="1.5" />
+          <circle cx="50" cy="50" r="24" fill="none" stroke="rgba(255, 235, 170, 0.25)" stroke-width="1" />
+          <polygon points="50,30 55,45 70,50 55,55 50,70 45,55 30,50 45,45" fill="rgba(255, 235, 170, 0.7)" />
+          <circle cx="50" cy="50" r="6" fill="#fae4a8" />
+        </svg>
+        <div class="shield-block-ripple" id="shieldRipple"></div>
+      </div>
+
+      <!-- Mobile Touch Drag Indicator -->
+      <div class="mobile-drag-hint">Touch & drag anywhere to control the shield</div>
+
+      <!-- Start Overlay Screen -->
+      <div id="gameStartModal" class="game-modal-overlay">
+        <div class="modal-card">
+          <div class="modal-crest">❖ &nbsp; TRIAL OF REFLECTION &nbsp; ❖</div>
+          <h2 class="modal-title">SHIELD OF PERSEUS</h2>
+          <p class="modal-instructions">
+            Control the mirrored shield. <strong>Intercept the striking vipers</strong> before they breach your guard. <strong>Never hover over Medusa's direct gaze</strong> for more than a breath. Beware asleep gorgons.
+          </p>
+          <div class="modal-rules-grid">
+            <div class="rule-col">
+              <span class="rule-icon">🛡️</span>
+              <span class="rule-txt">Block flying snakes</span>
+            </div>
+            <div class="rule-col">
+              <span class="rule-icon">👁️</span>
+              <span class="rule-txt">Look away from eyes</span>
+            </div>
+            <div class="rule-col">
+              <span class="rule-icon">⏱️</span>
+              <span class="rule-txt">Survive 10 seconds</span>
+            </div>
+          </div>
+          <button id="startGameBtn" class="game-btn primary-btn">
+            <span>RAISE YOUR SHIELD</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- End State Screens -->
+      <!-- 1. Gaze Death Screen -->
+      <div id="gazeDeathModal" class="game-modal-overlay">
+        <div class="modal-card death-card">
+          <div class="modal-alert-tag text-danger">PETRIFIED</div>
+          <h2 class="modal-title death-title">THE GAZE HAS TAKEN YOU</h2>
+          <div class="modal-divider red-divider"></div>
+          <p class="modal-lore-text">
+            “Her eyes meet yours. Stone creeps from your feet to your chest. You are Perseus no longer, only another statue in her collection.”
+          </p>
+          <button class="game-btn retry-btn" data-action="restart">
+            <span>TRY AGAIN</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 2. Sisters Awoken Screen -->
+      <div id="sistersAwokenModal" class="game-modal-overlay">
+        <div class="modal-card death-card">
+          <div class="modal-alert-tag text-danger">OVERRUN</div>
+          <h2 class="modal-title death-title">THE SISTERS AWAKEN</h2>
+          <div class="modal-divider red-divider"></div>
+          <p class="modal-lore-text">
+            “A hiss echoes through the cave, then another, then a third. You have woken her sisters. Three gorgons turn toward you as one. There is no mirror large enough for this.”
+          </p>
+          <button class="game-btn retry-btn" data-action="restart">
+            <span>TRY AGAIN</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- 3. Victory Screen & Pegasus Reveal -->
+      <div id="victoryModal" class="game-modal-overlay">
+        <div class="modal-card victory-card">
+          <!-- Step 1: Strike text -->
+          <div id="victoryStep1" class="victory-step active">
+            <div class="modal-crest">❖ &nbsp; MORTAL TRIUMPH &nbsp; ❖</div>
+            <h2 class="modal-title gold-title">THE STRIKE FINDS ITS MARK</h2>
+            <div class="modal-divider gold-divider"></div>
+            <p class="modal-lore-text">
+              “The blade finds its mark. Medusa falls.”
+            </p>
+          </div>
+
+          <!-- Step 2: Pegasus emerges -->
+          <div id="victoryStep2" class="victory-step">
+            <div class="pegasus-container">
+              <svg class="pegasus-svg" viewBox="0 0 200 200" aria-label="Pegasus Rising">
+                <defs>
+                  <radialGradient id="pegasusGlow" cx="50%" cy="50%" r="50%">
+                    <stop offset="0%" stop-color="#ffffff" />
+                    <stop offset="50%" stop-color="#fae4a8" />
+                    <stop offset="100%" stop-color="rgba(223, 177, 91, 0)" />
+                  </radialGradient>
+                </defs>
+                <!-- Pegasus Glow Halo -->
+                <circle cx="100" cy="100" r="85" fill="url(#pegasusGlow)" opacity="0.35" class="halo-pulse" />
+                <!-- Stylized Winged Steed Silhouette -->
+                <path class="pegasus-body" d="M70,120 C65,100 80,85 100,85 C120,85 135,100 130,120 C125,140 105,150 90,145 C75,140 75,130 70,120 Z" fill="#ffffff" />
+                <!-- Left Wing Unfurling -->
+                <path class="pegasus-wing wing-left" d="M90,95 C65,70 30,50 20,70 C15,80 35,95 60,105 C75,110 85,105 90,95 Z" fill="url(#shieldMirror)" />
+                <!-- Right Wing Unfurling -->
+                <path class="pegasus-wing wing-right" d="M110,95 C135,70 170,50 180,70 C185,80 165,95 140,105 C125,110 115,105 110,95 Z" fill="url(#shieldMirror)" />
+                <!-- Head & Crest -->
+                <path class="pegasus-head" d="M95,85 C95,65 110,50 118,52 C125,54 122,68 112,78 Z" fill="#ffffff" />
+              </svg>
+            </div>
+            <h2 class="modal-title gold-title">PEGASUS RISES</h2>
+            <div class="modal-divider gold-divider"></div>
+            <p class="modal-lore-text">
+              “From her fall, something new takes flight. Pegasus rises, and offers you the strength to carry your victory home.”
+            </p>
+            <button id="victoryContinueBtn" class="game-btn triumph-btn">
+              <span>RESUME STRIKE &bull; SLAY MEDUSA</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: CLOSING / EPILOGUE & FINAL LINE -->
+  <section class="epilogue-section" id="epilogue">
+    <div class="epilogue-backdrop"></div>
+    <div class="epilogue-content">
+      
+      <!-- Grand Pegasus Emergence at the End -->
+      <div class="epilogue-pegasus-wrap">
+        <div class="pegasus-container epilogue-pegasus-box">
+          <svg class="pegasus-svg" viewBox="0 0 200 200" aria-label="Pegasus Rising at the End">
+            <defs>
+              <radialGradient id="epiloguePegasusGlow" cx="50%" cy="50%" r="50%">
+                <stop offset="0%" stop-color="#ffffff" />
+                <stop offset="45%" stop-color="#fae4a8" />
+                <stop offset="80%" stop-color="#dfb15b" />
+                <stop offset="100%" stop-color="rgba(223, 177, 91, 0)" />
+              </radialGradient>
+            </defs>
+            <!-- Pegasus Glow Halo -->
+            <circle cx="100" cy="100" r="90" fill="url(#epiloguePegasusGlow)" opacity="0.45" class="halo-pulse" />
+            <!-- Stylized Winged Steed Silhouette -->
+            <path class="pegasus-body" d="M70,120 C65,100 80,85 100,85 C120,85 135,100 130,120 C125,140 105,150 90,145 C75,140 75,130 70,120 Z" fill="#ffffff" />
+            <!-- Left Wing Unfurling -->
+            <path class="pegasus-wing wing-left" d="M90,95 C65,70 30,50 20,70 C15,80 35,95 60,105 C75,110 85,105 90,95 Z" fill="url(#shieldMirror)" />
+            <!-- Right Wing Unfurling -->
+            <path class="pegasus-wing wing-right" d="M110,95 C135,70 170,50 180,70 C185,80 165,95 140,105 C125,110 115,105 110,95 Z" fill="url(#shieldMirror)" />
+            <!-- Head & Crest -->
+            <path class="pegasus-head" d="M95,85 C95,65 110,50 118,52 C125,54 122,68 112,78 Z" fill="#ffffff" />
+          </svg>
+        </div>
+        <div class="pegasus-epilogue-badge">❖ &nbsp; PEGASUS RISES &nbsp; ❖</div>
+        <p class="pegasus-epilogue-lore">
+          “From the fallen Gorgon, divine life is born. The winged steed Pegasus unfurls its radiant wings, taking flight into the heavens to carry the immortal hero home.”
+        </p>
+      </div>
+
+      <!-- SECTION 5.5: QUESTIONS FROM THE MYTH (Interactive Accordion) -->
+      <div class="myth-faq-section" id="mythFaq">
+        <div class="faq-header">
+          <div class="poster-crest">❖ &nbsp; ANCIENT LORE &nbsp; ❖</div>
+          <h3 class="faq-title">QUESTIONS FROM THE MYTH</h3>
+          <div class="faq-divider"></div>
+        </div>
+
+        <div class="accordion-container">
+          <!-- Accordion Item 1 -->
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span class="accordion-question">How did Medusa become like this?</span>
+              <span class="accordion-icon">＋</span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-content">
+                <p>
+                  Originally a mortal priestess of extraordinary beauty dedicated to Athena, Medusa was desired by Poseidon, who pursued and desecrated her within Athena's sacred temple. Enraged by the violation of her sanctuary, Athena cursed Medusa, transforming her golden hair into venomous serpents and turning her gaze into a fatal curse that turns anyone who meets her eyes to stone.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Item 2 -->
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span class="accordion-question">What happened to Perseus after this?</span>
+              <span class="accordion-icon">＋</span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-content">
+                <p>
+                  Using Medusa's severed head safely sealed in a magic satchel (the kibisis), Perseus flew across the world on winged sandals. He rescued Princess Andromeda from the sea monster Cetus, returned to Seriphos to petrify the tyrant King Polydectes, and eventually founded the legendary ancient city of Mycenae, fulfilling prophecy and securing his place among the stars as a constellation.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Accordion Item 3 -->
+          <div class="accordion-item">
+            <button class="accordion-header" aria-expanded="false">
+              <span class="accordion-question">Why was Perseus sent on this task in the first place?</span>
+              <span class="accordion-icon">＋</span>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-content">
+                <p>
+                  King Polydectes of Seriphos lusted after Perseus's mother, Danaë, but saw the fiercely protective Perseus as an obstacle. Feigning an upcoming royal wedding to another woman, Polydectes demanded gifts of horses from everyone. Perseus, having no wealth, proudly boasted he would bring anything asked, even the Gorgon's head. The king seized upon the boast, sending Perseus on what was universally believed to be a suicide mission.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="epilogue-final-hero">
+        <p class="final-line-pre">FINAL LINE</p>
+        <h2 class="final-line-main">
+          You entered the lair as a man.<br>
+          <span class="gold-gradient-text">You left as a legend.</span>
+        </h2>
+      </div>
+
+      <div class="epilogue-divider"></div>
+      
+      <blockquote class="epilogue-quote">
+        “And so the myth of Perseus and Medusa endures.”
+      </blockquote>
+      
+      <button class="return-btn" id="returnTopBtn" aria-label="Return to beginning">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+        <span>EXPERIENCE AGAIN</span>
+      </button>
+    </div>
+  </section>
+
+  <script src="script.js"></script>
+</body>
+</html>
