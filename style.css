@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PERSEUS & MEDUSA — CLEAN STYLESHEET
+  PERSEUS & MEDUSA: CLEAN STYLESHEET
    Palette: Deep Navy/Black (#05070c, #090e18), Gold (#dfb15b), Warm Bronze (#a67038)
    ========================================================================== */
 
@@ -1510,7 +1510,7 @@ body.modal-open {
 }
 
 /* ==========================================================================
-   SECTION 4: MINI-GAME — SHIELD OF PERSEUS (Fixed Popup Overlay in Same Window)
+  SECTION 4: MINI-GAME: SHIELD OF PERSEUS (Fixed Popup Overlay in Same Window)
    ========================================================================== */
 .game-modal-popup-layer {
   position: fixed;

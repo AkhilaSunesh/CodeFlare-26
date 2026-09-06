@@ -1,5 +1,5 @@
 /* ==========================================================================
-   PERSEUS & MEDUSA — 10-SECOND CINEMATIC SCROLL-SCRUBBING ENGINE
+  PERSEUS & MEDUSA: 10-SECOND CINEMATIC SCROLL-SCRUBBING ENGINE
    Clean Visual-First Scroll Scrubbing mapped to 50 Visual Sequence Frames
    ========================================================================== */
 
@@ -517,7 +517,7 @@ const TOTAL_FRAMES = 50;
   }
 
   // =========================================================================
-  // SECTION 4: MINI-GAME ENGINE — SHIELD OF PERSEUS
+  // SECTION 4: MINI-GAME ENGINE: SHIELD OF PERSEUS
   // =========================================================================
   function initPerseusGame() {
     const gameArea = document.getElementById('gameArea');
